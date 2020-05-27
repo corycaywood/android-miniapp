@@ -10,6 +10,7 @@ jobs:
     working_directory: ~/code
     environment:
       JVM_OPTS: "-Xmx3200m"
+    parallelism: 2
     steps:
       - checkout
       - run: git submodule update --init
