@@ -113,7 +113,7 @@ class MiniAppDisplayActivity : BaseActivity() {
 
                     val intent = Intent(this@MiniAppDisplayActivity, WebViewActivity::class.java).apply {
                         putExtra(WebViewActivity.loadUrlTag, url)
-                        putExtra(WebViewActivity.miniAppUrlSchemesTag, sampleWebViewResultHandler.getMiniAppUrlSchemes())
+                        putExtra(WebViewActivity.miniAppIdTag, intent.getParcelableExtra<MiniAppInfo>(miniAppTag)!!.id)
                     }
                     startActivityForResult(intent, externalWebViewReqCode)
                 }
@@ -148,12 +148,7 @@ class MiniAppDisplayActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == externalWebViewReqCode && resultCode == Activity.RESULT_OK) {
-            data?.let {intent ->
-                if (intent.hasExtra(WebViewActivity.loadUrlTag))
-                    sampleWebViewResultHandler.emitResult(HashMap<String, String>().apply {
-                        put(ExternalResultHandler.URL, intent.getStringExtra(WebViewActivity.loadUrlTag)!!)
-                    })
-            }
+            data?.let { intent -> sampleWebViewResultHandler.emitResult(intent) }
         }
     }
 

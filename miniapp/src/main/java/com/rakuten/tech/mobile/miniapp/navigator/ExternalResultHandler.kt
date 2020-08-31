@@ -1,5 +1,6 @@
 package com.rakuten.tech.mobile.miniapp.navigator
 
+import android.content.Intent
 import kotlin.properties.Delegates.observable
 
 /**
@@ -23,13 +24,13 @@ class ExternalResultHandler {
     }
     internal var onResultChanged: ((Map<String, String>) -> Unit)? = null
 
-    /** Get the value of miniAppUrlSchemes, not reference. */
-    fun getMiniAppUrlSchemes(): Array<String> = miniAppUrlSchemes.toTypedArray()
-
     /**
      * Notify the result to mini app view.
      */
-    fun emitResult(mapResult: Map<String, String>) {
-        result = mapResult
+    fun emitResult(intent: Intent) {
+        if (intent.hasExtra(MiniAppExternalUrlLoader.returnUrlTag))
+            result = HashMap<String, String>().apply {
+                put(ExternalResultHandler.URL, intent.getStringExtra(MiniAppExternalUrlLoader.returnUrlTag)!!)
+            }
     }
 }
